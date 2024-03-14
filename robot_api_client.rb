@@ -22,7 +22,21 @@ req.basic_auth(BASIC_ID, BASIC_PW)
 # 4.リクエストを投げる/レスポンスを受け取る
 res = https.request(req)
 # 5.データを変換する
-binding.irb
 hash = JSON.parse(res.body)
+binding.irb
 # 結果を出力
-puts hash
+# puts hash
+
+# ここから下、出力形式を変えて表示する
+output_format = (ARGV[0] || '').downcase
+
+case output_format
+when 'json'
+  puts JSON.pretty_generate(hash)
+when 'csv'
+  csv_data = hash.map { |result| [result["code"], result["displayName"]] }
+  csv_string = CSV.generate { |csv| csv_data.each { |row| csv << row } }
+  puts csv_string
+else
+  puts "Invalid output format. Please use 'json' or 'csv'."
+end
