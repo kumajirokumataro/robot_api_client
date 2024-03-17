@@ -23,13 +23,11 @@ req.basic_auth(BASIC_ID, BASIC_PW)
 res = https.request(req)
 # 5.データを変換する
 hash = JSON.parse(res.body)
-binding.irb
 # 結果を出力
 # puts hash
 
 # ここから下、出力形式を変えて表示する
 output_format = (ARGV[0] || '').downcase
-
 case output_format
 when 'json'
   puts JSON.pretty_generate(hash)
